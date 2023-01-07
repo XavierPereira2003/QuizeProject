@@ -1,3 +1,9 @@
+"""
+colour pallet (main)=#ebac4d
+
+"""
+
+
 from tkinter import*
 #import main.py
 root=Tk()
