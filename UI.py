@@ -3,7 +3,7 @@ colour pallet (main)=#ebac4d
 
 """
 
-
+import subprocess
 from tkinter import*
 from tkinter import messagebox as tmb #text message box
 #import main.py
@@ -15,12 +15,13 @@ def home():#defining The home page
     start_frame.pack()
     exitbut=Button(start_frame,text="Exit",font=("Times New Roman",25,"bold"),activebackground="#247371",bg="#4debe8",command=lambda:root.destroy())
     exitbut.place(relx=0.5,rely=0.9,anchor=S)
-    starbut=Button(start_frame,text="Start",font=("Times New Roman",25,"bold"),activebackground="#247371",bg="#4debe8",command=lambda:root.destroy())
+    starbut=Button(start_frame,text="Start",font=("Times New Roman",25,"bold"),activebackground="#247371",bg="#4debe8",command=lambda:subprocess.Popen(args=['python','main.py']))
     starbut.place(relx=0.5,rely=0.5,anchor=S)
 
-def play():#defining The play page
+def play():#defining The play button
+    
     return
-
+ 
 def result():#defining The result page
 
     total_questions = 20 #test_variable 1
@@ -40,6 +41,6 @@ scrw=root.winfo_screenwidth()   # Getting Screen width
 
 root.geometry("%dx%d"%(scrw,scrh))#Setting window to full screen
 home()
-result()
+#result()
 print("Start Screen Loaded")
 root.mainloop()
