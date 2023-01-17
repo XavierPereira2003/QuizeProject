@@ -26,21 +26,17 @@ root.geometry("%dx%d"%(scrw,scrh))
 # class quesbut():
 #     def __ini__():
 def main():
-    def Question_fram():
-        question_fram=Frame(root,height=scrh,width=scrw*0.66666,bg="#ebac4d")
-        question_fram.pack(side=LEFT)
-    
-        
-    def Time_fram():
-        time_fram=Frame(root,height=scrh*0.25,width=scrw*(1-0.66666),bg="#03bafc")
-        time_fram.pack(side=TOP)
-
-
+    def timer():
+        time=Label(time_fram,text="Play",width=300,height=2,font=("garamond",80,'italic'),bg='#dec06f')
+        time.pack()
     #DO NOT CHANGE THIS ORDER(The arrangement of the frames will mess up)
-    Question_fram()
-    Time_fram()
+    question_fram=Frame(root,height=scrh,width=scrw*0.66666,bg="#ebac4d")
+    question_fram.pack(side=LEFT)
+    time_fram=Frame(root,height=scrh*0.25,width=scrw*(1-0.66666),bg="#03bafc")
+    time_fram.pack(side=TOP)
     ques_list_fram=Frame(root,height=scrh*0.75,width=scrw*(1-0.66666),bg="#bafc03")
     ques_list_fram.pack(side=BOTTOM)
+    timer()
 
 main()
 # #with open("question.json") as question:
