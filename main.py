@@ -36,6 +36,7 @@ def main():
     time_fram.pack(side=TOP)
     ques_list_fram=Frame(root,height=scrh*0.75,width=scrw*(1-0.66666),bg="#bafc03")
     ques_list_fram.pack(side=BOTTOM)
+      
     timer()
 
 main()
