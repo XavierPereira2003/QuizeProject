@@ -4,6 +4,7 @@ This is the functional unit of the project where all the logic for cheaking for 
 
 
 """
+
 class Question:
     """
     This class is intended for making, displaying and removing  the questions seen on the quize page.
@@ -30,6 +31,7 @@ class Question:
         
 
     def Destroy(self):
+        self.playeranswer=self.choice
         self.QuestionLabel.destroy()
         self.option1.destroy()
         self.option2.destroy()
@@ -37,6 +39,7 @@ class Question:
         self.option4.destroy()
 
 
+global start_frame,question_fram,time_fram,ques_list_fram
 
 def main():
     """
@@ -46,30 +49,46 @@ def main():
     cur=0
     def timer():#This is the functional timer for the project.
         global Time
-        Time=90
+        Time=60
         while Time!=0:
             time=Label(time_fram,text="%d:%d"%(Time//60,Time%60),width=300,height=3,font=("Times New Roman",80),bg='#ebac4d')
             time.pack()
             Time-=1
             sleep(1)
             time.destroy()
+        result()
     def next():
         global cur
-        if cur!=9:
-            Quest_list[cur].Destroy()
-            cur+=1
+        try:
+            if 0<=cur<9:
+                print("1Next=",cur)
+                Quest_list[cur].Destroy()
+                cur+=1
+                Quest_list[cur].show()
+                print("2Next=",cur)
+            else:
+                print(cur)
+                cur=9
+                Quest_list[cur].show()
+                messagebox.showinfo(title="Quize Project", message="You Have reached the end of the quiz")
+        except:
+            cur=0
             Quest_list[cur].show()
-        else:
-            messagebox.showinfo(title="Quize Project", message="You Have reached the end of the quiz")
 
     def prev():
         global cur
-        if cur!=0:
-            Quest_list[cur].Destroy()
-            cur-=1
+        try:
+            if 0<cur<=9:
+                print("1Prev=",cur)
+                Quest_list[cur].Destroy()
+                cur=cur-1
+                Quest_list[cur].show()
+                print("2Prev=",cur)
+            else:
+                messagebox.showinfo(title="Quize Project", message="You are at the begining of the quiz")
+        except:
+            cur=0
             Quest_list[cur].show()
-        else:
-            messagebox.showinfo(title="Quize Project", message="You are at the begining of the quiz")
 
     def result():
         ques_list_fram.destroy()
@@ -80,9 +99,11 @@ def main():
             if Quest_list[i].choice==Quest_list[i].ans:
                 count+=1
         messagebox.showinfo(title="Quize Project", message="You got %d out 10 coreect"%(count))
+        home()
+        
 
     #DO NOT CHANGE THIS ORDER(The arrangement of the frames will mess up)
-    #global question_fram,time_fram,
+    global question_fram,time_fram,ques_list_fram
     question_fram=Frame(root,height=scrh,width=scrw*0.66666,bg="#ebac4d")
     time_fram=Frame(root,height=scrh*0.25,width=scrw*(1-0.66666),bg="#ebac4d")
     ques_list_fram=Frame(root,height=scrh*0.75,width=scrw*(1-0.66666),bg="#ebac4d")
@@ -104,13 +125,15 @@ def main():
     
     
     
-    Quest_list[0].show()
+    Quest_list[cur].show()
 
     #Timer Starts
     t1=threading.Thread(target=timer)
     t1.start()
 
-
+def home_to_main():
+    start_frame.destroy()
+    main()
 
      
 
@@ -122,9 +145,22 @@ import json
 from random import randint,shuffle
 from tkinter import messagebox
 
+
+
+def home():#defining The home page
+    global start_frame
+    start_frame=Frame(root,height=scrh,width=scrw,bg="#ebac4d")
+    start_frame.pack()
+    exitbut=Button(start_frame,text="Exit",font=("Times New Roman",25,"bold"),activebackground="#247371",bg="#4debe8",command=lambda:root.destroy())
+    exitbut.place(relx=0.5,rely=0.9,anchor=S)
+    starbut=Button(start_frame,text="Start",font=("Times New Roman",25,"bold"),activebackground="#247371",bg="#4debe8",command=lambda:home_to_main())
+    starbut.place(relx=0.5,rely=0.5,anchor=S)
+
 #Preprocessing
 
 root=Tk()
+root.title("QUIZOOO")
+
 scrh=root.winfo_screenheight()  # Getting screen height
 scrw=root.winfo_screenwidth()   # Getting Screen width
 root.geometry("%dx%d"%(scrw,scrh))
@@ -145,21 +181,6 @@ with open("question.json") as quest:
                 break
 
 shuffle(question)
-main()
- 
+home()
+#main()
 root.mainloop()
-
-
-# def result():#defining The result page
-
-#     total_questions = 20 #test_variable 1
-#     count_right = 10    #test_variable 2
-
-#     count_wrong = total_questions - count_right
-#     right_answer = f"Correct: {count_right}"
-#     wrong_answer = f"Wrong: {count_wrong}"
-    
-#     the_score = int(count_right/total_questions*100)
-#     the_result= f"Score:{the_score}%"
-#     tmb.showinfo("Result",f"{the_result}\n{right_answer}\n{wrong_answer}")
-#     return
