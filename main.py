@@ -4,8 +4,6 @@ This is the functional unit of the project where all the logic for cheaking for 
 
 
 """
-
-
 class Question:
     """
     This class is intended for making, displaying and removing  the questions seen on the quize page.
@@ -15,12 +13,12 @@ class Question:
         self.options.append(quest["ans"])
         shuffle(self.options)
         self.ans=quest["ans"]
-        self.QuestionLabel=Label(frame,text=quest["ques"],height=2,font=("Times New Roman",35,'italic'),bg='#dec06f',wraplength=1000, justify="center")
+        self.QuestionLabel=Label(frame,text=quest["ques"],height=2,font=("Times New Roman",35,'italic'),bg='#ebac4d',wraplength=1000, justify="center")
         self.choice=StringVar()
-        self.option1=Radiobutton(frame, text=self.options[0],font=("Times New Roman",35),bg='#dec06f', variable=self.choice, value=self.options[0])
-        self.option2=Radiobutton(frame, text=self.options[1],font=("Times New Roman",35),bg='#dec06f', variable=self.choice, value=self.options[1])
-        self.option3=Radiobutton(frame, text=self.options[2],font=("Times New Roman",35),bg='#dec06f', variable=self.choice, value=self.options[2])
-        self.option4=Radiobutton(frame, text=self.options[3],font=("Times New Roman",35),bg='#dec06f', variable=self.choice, value=self.options[3])
+        self.option1=Radiobutton(frame, text=self.options[0],font=("Times New Roman",35),bg='#ebac4d',wraplength=500, variable=self.choice, value=self.options[0])
+        self.option2=Radiobutton(frame, text=self.options[1],font=("Times New Roman",35),bg='#ebac4d',wraplength=500, variable=self.choice, value=self.options[1])
+        self.option3=Radiobutton(frame, text=self.options[2],font=("Times New Roman",35),bg='#ebac4d',wraplength=500, variable=self.choice, value=self.options[2])
+        self.option4=Radiobutton(frame, text=self.options[3],font=("Times New Roman",35),bg='#ebac4d',wraplength=500, variable=self.choice, value=self.options[3])
         
 
     def show(self):
@@ -50,7 +48,7 @@ def main():
         global Time
         Time=90
         while Time!=0:
-            time=Label(time_fram,text="%d:%d"%(Time//60,Time%60),width=300,height=2,font=("garamond",80,'italic'),bg='#dec06f')
+            time=Label(time_fram,text="%d:%d"%(Time//60,Time%60),width=300,height=3,font=("Times New Roman",80),bg='#ebac4d')
             time.pack()
             Time-=1
             sleep(1)
@@ -62,7 +60,7 @@ def main():
             cur+=1
             Quest_list[cur].show()
         else:
-            root.messagebox.showinfo(title="Quize Project", message="You Have reached the end of the quiz")
+            messagebox.showinfo(title="Quize Project", message="You Have reached the end of the quiz")
 
     def prev():
         global cur
@@ -71,19 +69,33 @@ def main():
             cur-=1
             Quest_list[cur].show()
         else:
-            root.messagebox.showinfo(title="Quize Project", message="You are at the begining of the quiz")
+            messagebox.showinfo(title="Quize Project", message="You are at the begining of the quiz")
+
+    def result():
+        ques_list_fram.destroy()
+        question_fram.destroy()
+        time_fram.destroy()
+        count=0
+        for i in range(10):
+            if Quest_list[i].choice==Quest_list[i].ans:
+                count+=1
+        messagebox.showinfo(title="Quize Project", message="You got %d out 10 coreect"%(count))
 
     #DO NOT CHANGE THIS ORDER(The arrangement of the frames will mess up)
+    #global question_fram,time_fram,
     question_fram=Frame(root,height=scrh,width=scrw*0.66666,bg="#ebac4d")
+    time_fram=Frame(root,height=scrh*0.25,width=scrw*(1-0.66666),bg="#ebac4d")
+    ques_list_fram=Frame(root,height=scrh*0.75,width=scrw*(1-0.66666),bg="#ebac4d")
+
     question_fram.pack(side=LEFT)
-    time_fram=Frame(root,height=scrh*0.25,width=scrw*(1-0.66666),bg="#03bafc")
     time_fram.pack(side=TOP)
-    ques_list_fram=Frame(root,height=scrh*0.75,width=scrw*(1-0.66666),bg="#bafc03")
     ques_list_fram.pack(side=BOTTOM) 
+
     next_but= Button(ques_list_fram,text="Next",width=10,font=("Courier",25,"bold"),activebackground="#065e47",bg='#94ffe2', command=lambda:next())
     prev_but= Button(ques_list_fram,text="Prevous",width=10,font=("Courier",25,"bold"),activebackground="#065e47",bg='#94ffe2',command=lambda:prev())
     next_but.place(relx=0.5,rely=0.3,anchor=N)
     prev_but.place(relx=0.5,rely=0.5,anchor=N)
+
     #Creating a list of questions
     global Quest_list
     Quest_list=list()
@@ -98,8 +110,9 @@ def main():
     t1=threading.Thread(target=timer)
     t1.start()
 
-    
-    
+
+
+     
 
 #Importing Libraires
 from tkinter import *
@@ -107,6 +120,7 @@ from time import sleep
 import threading
 import json
 from random import randint,shuffle
+from tkinter import messagebox
 
 #Preprocessing
 
@@ -130,7 +144,7 @@ with open("question.json") as quest:
                 question.append(quest[i])
                 break
 
-print(question)
+shuffle(question)
 main()
  
 root.mainloop()
