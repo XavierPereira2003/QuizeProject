@@ -8,20 +8,25 @@ class Question:
     """
     This class is intended for making, displaying and changing the questions seen on the quize page.
     """
-    def __init__(self,frame,hight,width,quest,ans,dis):
-        self.options=dis+list(ans)
+    def __init__(self,frame,hight,width,quest):
+        self.options=list(quest["dis"])
+        self.options.append(quest["ans"])
         shuffle(self.options)
-        self.ans=ans
-        self.frameFrame(frame,height=hight,width=width,bg="#ebac4d")
-        self.QuestionLabel=Label(frame,text=quest,width=300,height=2,font=("garamond",80,'italic'),bg='#dec06f')
+        self.ans=quest["ans"]
+        self.QuestionLabel=Label(frame,text=quest["ques"],height=2,font=("garamond",12,'italic'),bg='#dec06f')
         self.choice=StringVar()
-        self.option1=Radiobutton(self.frame, text=quest, variable=self.choice, value=self.options[0])
-        self.option2=Radiobutton(self.frame, text=quest, variable=self.choice, value=self.options[1])
-        self.option3=Radiobutton(self.frame, text=quest, variable=self.choice, value=self.options[2])
-        self.option4=Radiobutton(self.frame, text=quest, variable=self.choice, value=self.options[3])
+        self.option1=Radiobutton(frame, text=self.options[0], variable=self.choice, value=self.options[0])
+        self.option2=Radiobutton(frame, text=self.options[1], variable=self.choice, value=self.options[1])
+        self.option3=Radiobutton(frame, text=self.options[2], variable=self.choice, value=self.options[2])
+        self.option4=Radiobutton(frame, text=self.options[3], variable=self.choice, value=self.options[3])
+        
 
-    def pack(self):
-        self.frame.pack()
+    def Pack(self):
+        self.QuestionLabel.place(relx=0.5,rely=0.35,anchor=N)
+        self.option1.place(relx=0.5,rely=0.35,anchor=N)
+        self.option2.place(relx=0.,rely=0.35,anchor=N)
+        self.option3.place(relx=0.5,rely=0.35,anchor=N)
+        self.option4.place(relx=0.5,rely=0.35,anchor=N)
         
 
     def destroy(self):
@@ -33,6 +38,7 @@ def main():
     """
     This is functional unit of the program. In here we build the main quiz page.
     """
+    """
     def timer():#This is the functional timer for the project.
         global Time
         Time=90
@@ -42,6 +48,7 @@ def main():
             Time-=1
             sleep(1)
             time.destroy()
+    """
     #DO NOT CHANGE THIS ORDER(The arrangement of the frames will mess up)
     question_fram=Frame(root,height=scrh,width=scrw*0.66666,bg="#ebac4d")
     question_fram.pack(side=LEFT)
@@ -53,8 +60,10 @@ def main():
     prev_but= Button(ques_list_fram,text="Prevous",width=10,font=("Courier",25,"bold"),activebackground="#065e47",bg='#94ffe2')
     next_but.place(relx=0.5,rely=0.3,anchor=N)
     prev_but.place(relx=0.5,rely=0.5,anchor=N)
-    t1=threading.Thread(target=timer)
-    t1.start()
+    #t1=threading.Thread(target=timer)
+    #t1.start()
+    test=Question(question_fram,scrh-scrh*0.20,scrw*0.66666,question[0])
+    test.Pack()
 
 # #
 from tkinter import *
@@ -71,15 +80,16 @@ root.geometry("%dx%d"%(scrw,scrh))
 """
 In this part we are choosing the questions
 """
-Question=[]
+global question
+question=[]
 with open("question.json") as quest:
     quest=json.load(quest)
     for i in range(10):
         #This part is done so no same question appear twice
         while(True):
             k=randint(0,len(quest)-1)
-            if quest[k] not in Question:
-                Question.append(quest[i])
+            if quest[k] not in question:
+                question.append(quest[i])
                 break
 
 main()
