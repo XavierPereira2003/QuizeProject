@@ -4,33 +4,39 @@ This is the functional unit of the project where all the logic for cheaking for 
 
 
 """
+
+
 class Question:
     """
-    This class is intended for making, displaying and changing the questions seen on the quize page.
+    This class is intended for making, displaying and removing  the questions seen on the quize page.
     """
     def __init__(self,frame,hight,width,quest):
         self.options=list(quest["dis"])
         self.options.append(quest["ans"])
         shuffle(self.options)
         self.ans=quest["ans"]
-        self.QuestionLabel=Label(frame,text=quest["ques"],height=2,font=("garamond",12,'italic'),bg='#dec06f')
+        self.QuestionLabel=Label(frame,text=quest["ques"],height=2,font=("Times New Roman",35,'italic'),bg='#dec06f',wraplength=1000, justify="center")
         self.choice=StringVar()
-        self.option1=Radiobutton(frame, text=self.options[0], variable=self.choice, value=self.options[0])
-        self.option2=Radiobutton(frame, text=self.options[1], variable=self.choice, value=self.options[1])
-        self.option3=Radiobutton(frame, text=self.options[2], variable=self.choice, value=self.options[2])
-        self.option4=Radiobutton(frame, text=self.options[3], variable=self.choice, value=self.options[3])
+        self.option1=Radiobutton(frame, text=self.options[0],font=("Times New Roman",35),bg='#dec06f', variable=self.choice, value=self.options[0])
+        self.option2=Radiobutton(frame, text=self.options[1],font=("Times New Roman",35),bg='#dec06f', variable=self.choice, value=self.options[1])
+        self.option3=Radiobutton(frame, text=self.options[2],font=("Times New Roman",35),bg='#dec06f', variable=self.choice, value=self.options[2])
+        self.option4=Radiobutton(frame, text=self.options[3],font=("Times New Roman",35),bg='#dec06f', variable=self.choice, value=self.options[3])
         
 
-    def Pack(self):
-        self.QuestionLabel.place(relx=0.5,rely=0.35,anchor=N)
-        self.option1.place(relx=0.5,rely=0.35,anchor=N)
-        self.option2.place(relx=0.,rely=0.35,anchor=N)
-        self.option3.place(relx=0.5,rely=0.35,anchor=N)
-        self.option4.place(relx=0.5,rely=0.35,anchor=N)
+    def show(self):
+        self.QuestionLabel.place(relx=0.5,rely=0.15,anchor=N)
+        self.option1.place(relx=0.25,rely=0.30,anchor=N)
+        self.option2.place(relx=0.75,rely=0.30,anchor=N)
+        self.option3.place(relx=0.25,rely=0.75,anchor=S)
+        self.option4.place(relx=0.75,rely=0.75,anchor=S)
         
 
-    def destroy(self):
-        self.destroy()
+    def Destroy(self):
+        self.QuestionLabel.destroy()
+        self.option1.destroy()
+        self.option2.destroy()
+        self.option3.destroy()
+        self.option4.destroy()
 
 
 
@@ -38,7 +44,8 @@ def main():
     """
     This is functional unit of the program. In here we build the main quiz page.
     """
-    """
+    global cur
+    cur=0
     def timer():#This is the functional timer for the project.
         global Time
         Time=90
@@ -48,7 +55,24 @@ def main():
             Time-=1
             sleep(1)
             time.destroy()
-    """
+    def next():
+        global cur
+        if cur!=9:
+            Quest_list[cur].Destroy()
+            cur+=1
+            Quest_list[cur].show()
+        else:
+            root.messagebox.showinfo(title="Quize Project", message="You Have reached the end of the quiz")
+
+    def prev():
+        global cur
+        if cur!=0:
+            Quest_list[cur].Destroy()
+            cur-=1
+            Quest_list[cur].show()
+        else:
+            root.messagebox.showinfo(title="Quize Project", message="You are at the begining of the quiz")
+
     #DO NOT CHANGE THIS ORDER(The arrangement of the frames will mess up)
     question_fram=Frame(root,height=scrh,width=scrw*0.66666,bg="#ebac4d")
     question_fram.pack(side=LEFT)
@@ -56,22 +80,36 @@ def main():
     time_fram.pack(side=TOP)
     ques_list_fram=Frame(root,height=scrh*0.75,width=scrw*(1-0.66666),bg="#bafc03")
     ques_list_fram.pack(side=BOTTOM) 
-    next_but= Button(ques_list_fram,text="Next",width=10,font=("Courier",25,"bold"),activebackground="#065e47",bg='#94ffe2')# command=)
-    prev_but= Button(ques_list_fram,text="Prevous",width=10,font=("Courier",25,"bold"),activebackground="#065e47",bg='#94ffe2')
+    next_but= Button(ques_list_fram,text="Next",width=10,font=("Courier",25,"bold"),activebackground="#065e47",bg='#94ffe2', command=lambda:next())
+    prev_but= Button(ques_list_fram,text="Prevous",width=10,font=("Courier",25,"bold"),activebackground="#065e47",bg='#94ffe2',command=lambda:prev())
     next_but.place(relx=0.5,rely=0.3,anchor=N)
     prev_but.place(relx=0.5,rely=0.5,anchor=N)
-    #t1=threading.Thread(target=timer)
-    #t1.start()
-    test=Question(question_fram,scrh-scrh*0.20,scrw*0.66666,question[0])
-    test.Pack()
+    #Creating a list of questions
+    global Quest_list
+    Quest_list=list()
+    for i in range(10):
+        Quest_list.append(Question(question_fram,scrh-scrh*0.20,scrw*0.66666,question[i]))
+    
+    
+    
+    Quest_list[0].show()
 
-# #
+    #Timer Starts
+    t1=threading.Thread(target=timer)
+    t1.start()
+
+    
+    
+
+#Importing Libraires
 from tkinter import *
 from time import sleep
 import threading
 import json
 from random import randint,shuffle
+
 #Preprocessing
+
 root=Tk()
 scrh=root.winfo_screenheight()  # Getting screen height
 scrw=root.winfo_screenwidth()   # Getting Screen width
@@ -92,6 +130,7 @@ with open("question.json") as quest:
                 question.append(quest[i])
                 break
 
+print(question)
 main()
  
 root.mainloop()
