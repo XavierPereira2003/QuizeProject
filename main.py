@@ -12,36 +12,43 @@ JSON file format
 ]
 
 """
-from tkinter import *
-import time
-
-
-#Preprocessing
-root=Tk()
-scrh=root.winfo_screenheight()  # Getting screen height
-scrw=root.winfo_screenwidth()   # Getting Screen width
-
-root.geometry("%dx%d"%(scrw,scrh))
-
 # class quesbut():
 #     def __ini__():
+
 def main():
     def timer():
-        time=Label(time_fram,text="Play",width=300,height=2,font=("garamond",80,'italic'),bg='#dec06f')
-        time.pack()
+        global Time
+        Time=30
+        while Time!=0:
+            time=Label(time_fram,text="%d"%(Time),width=300,height=2,font=("garamond",80,'italic'),bg='#dec06f')
+            time.pack()
+            Time-=1
+            sleep(1)
+            time.destroy()
     #DO NOT CHANGE THIS ORDER(The arrangement of the frames will mess up)
     question_fram=Frame(root,height=scrh,width=scrw*0.66666,bg="#ebac4d")
     question_fram.pack(side=LEFT)
     time_fram=Frame(root,height=scrh*0.25,width=scrw*(1-0.66666),bg="#03bafc")
     time_fram.pack(side=TOP)
     ques_list_fram=Frame(root,height=scrh*0.75,width=scrw*(1-0.66666),bg="#bafc03")
-    ques_list_fram.pack(side=BOTTOM)
-      
-    timer()
+    ques_list_fram.pack(side=BOTTOM) 
+    t1=threading.Thread(target=timer)
+    t1.start()
+
+# #with open("question.json") as question:
+from tkinter import *
+from time import sleep
+import threading
+
+#Preprocessing
+root=Tk()
+scrh=root.winfo_screenheight()  # Getting screen height
+scrw=root.winfo_screenwidth()   # Getting Screen width
+root.geometry("%dx%d"%(scrw,scrh))
+
 
 main()
-# #with open("question.json") as question:
-    
+ 
 root.mainloop()
 
 
