@@ -149,11 +149,14 @@ from tkinter import messagebox
 
 def home():#defining The home page
     global start_frame
+
     start_frame=Frame(root,height=scrh,width=scrw,bg="#ebac4d")
     start_frame.pack()
-    exitbut=Button(start_frame,text="Exit",font=("Times New Roman",25,"bold"),activebackground="#247371",bg="#4debe8",command=lambda:root.destroy())
-    exitbut.place(relx=0.5,rely=0.9,anchor=S)
-    starbut=Button(start_frame,text="Start",font=("Times New Roman",25,"bold"),activebackground="#247371",bg="#4debe8",command=lambda:home_to_main())
+    my_label=Label(root, text="Quiz Project", font=("Times New Roman", 70, "bold"),bg="#ebac4d")
+    my_label.place(relx =0.5, rely = 0.1, anchor=N)
+    exitbut=Button(start_frame,text="Exit", width =10, font=("Times New Roman",25,"bold"),activebackground="#247371",bg="#4debe8",command=lambda:root.destroy())
+    exitbut.place(relx=0.5,rely=0.7,anchor=S)
+    starbut=Button(start_frame,text="Start", width =10, font=("Times New Roman",25,"bold"),activebackground="#247371",bg="#4debe8",command=lambda:home_to_main())
     starbut.place(relx=0.5,rely=0.5,anchor=S)
 
 #Preprocessing
