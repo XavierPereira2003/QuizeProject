@@ -20,7 +20,7 @@ class Question:
         self.option2=Radiobutton(frame, text=self.options[1],font=("Times New Roman",35),bg='#ebac4d',wraplength=500, variable=self.choice, value=self.options[1])
         self.option3=Radiobutton(frame, text=self.options[2],font=("Times New Roman",35),bg='#ebac4d',wraplength=500, variable=self.choice, value=self.options[2])
         self.option4=Radiobutton(frame, text=self.options[3],font=("Times New Roman",35),bg='#ebac4d',wraplength=500, variable=self.choice, value=self.options[3])
-        
+        self.playerans=None
 
     def show(self):
         self.QuestionLabel.place(relx=0.5,rely=0.15,anchor=N)
@@ -31,7 +31,8 @@ class Question:
         
 
     def Destroy(self):
-        self.playeranswer=self.choice
+        self.playerans=self.choice.get()
+        #self.playeranswer=self.choice
         self.QuestionLabel.destroy()
         self.option1.destroy()
         self.option2.destroy()
@@ -61,11 +62,11 @@ def main():
         global cur
         try:
             if 0<=cur<9:
-                print("1Next=",cur)
+               # print("1Next=",cur)
                 Quest_list[cur].Destroy()
                 cur+=1
                 Quest_list[cur].show()
-                print("2Next=",cur)
+                #print("2Next=",cur)
             else:
                 print(cur)
                 cur=9
@@ -96,7 +97,7 @@ def main():
         time_fram.destroy()
         count=0
         for i in range(10):
-            if Quest_list[i].choice==Quest_list[i].ans:
+            if Quest_list[i].playerans==Quest_list[i].ans:
                 count+=1
         messagebox.showinfo(title="Quize Project", message="You got %d out 10 coreect"%(count))
         home()
@@ -154,7 +155,7 @@ def home():#defining The home page
 
     start_frame=Frame(root,height=scrh,width=scrw,bg="#ebac4d")
     start_frame.pack()
-    my_label=Label(root, text="Quiz Project", font=("Times New Roman", 70, "bold"),bg="#ebac4d")
+    my_label=Label(start_frame, text="Quiz Project", font=("Times New Roman", 70, "bold"),bg="#ebac4d")
     my_label.place(relx =0.5, rely = 0.1, anchor=N)
     exitbut=Button(start_frame,text="Exit", width =10, font=("Times New Roman",25,"bold"),activebackground="#247371",bg="#4debe8",command=lambda:root.destroy())
     exitbut.place(relx=0.5,rely=0.7,anchor=S)
