@@ -114,8 +114,10 @@ def main():
 
     next_but= Button(ques_list_fram,text="Next",width=10,font=("Courier",25,"bold"),activebackground="#065e47",bg='#94ffe2', command=lambda:next())
     prev_but= Button(ques_list_fram,text="Prevous",width=10,font=("Courier",25,"bold"),activebackground="#065e47",bg='#94ffe2',command=lambda:prev())
+    submit_but= Button(ques_list_fram,text="Submit",width=10,font=("Courier",25,"bold"),activebackground="#065e47",bg='#94ffe2',command=lambda:result())
     next_but.place(relx=0.5,rely=0.3,anchor=N)
     prev_but.place(relx=0.5,rely=0.5,anchor=N)
+    submit_but.place(relx=0.5,rely=0.7,anchor=N)
 
     #Creating a list of questions
     global Quest_list
