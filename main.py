@@ -33,11 +33,11 @@ class Question:
     def Destroy(self):
         self.playerans=self.choice.get()
         #self.playeranswer=self.choice
-        self.QuestionLabel.destroy()
-        self.option1.destroy()
-        self.option2.destroy()
-        self.option3.destroy()
-        self.option4.destroy()
+        self.QuestionLabel.place_forget()
+        self.option1.place_forget()
+        self.option2.place_forget()
+        self.option3.place_forget()
+        self.option4.place_forget()
 
 
 global start_frame,question_fram,time_fram,ques_list_fram
@@ -80,11 +80,11 @@ def main():
         global cur
         try:
             if 0<cur<=9:
-                print("1Prev=",cur)
+                #print("1Prev=",cur)
                 Quest_list[cur].Destroy()
                 cur=cur-1
                 Quest_list[cur].show()
-                print("2Prev=",cur)
+                #print("2Prev=",cur)
             else:
                 messagebox.showinfo(title="Quize Project", message="You are at the begining of the quiz")
         except:
